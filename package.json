@@ -5,9 +5,13 @@
   "scripts": {
     "test": "mocha test && standard"
   },
+  "homepage": "https://github.com/jsreport/jsreport-reports",
+  "repository": {
+    "type": "git",
+    "url": "git@github.com:jsreport/jsreport-reports.git"
+  },
   "keywords": [
-    "jsreport",
-    "analytics"
+    "jsreport"
   ],
   "standard": {
     "ignore": [
@@ -24,9 +28,9 @@
   },
   "license": "LGPL",
   "dependencies": {
-    "q": "^1.4.1",
-    "underscore": "^1.8.3",
-    "url": "^0.11.0"
+    "q": "1.4.1",
+    "underscore": "1.8.3",
+    "url": "0.11.0"
   },
   "author": "Jan Blaha",
   "devDependencies": {
