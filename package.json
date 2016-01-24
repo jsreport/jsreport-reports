@@ -29,6 +29,7 @@
   },
   "license": "LGPL",
   "dependencies": {
+    "node.extend": "^1.1.5",
     "q": "1.4.1",
     "underscore": "1.8.3",
     "url": "0.11.0"
@@ -40,6 +41,7 @@
     "jsreport-express": "*",
     "mocha": "^2.3.3",
     "requirejs": "^2.1.22",
+    "should": "^8.2.0",
     "standard": "^5.3.1",
     "supertest": "^1.1.0"
   }

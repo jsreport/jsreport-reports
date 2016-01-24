@@ -6,9 +6,9 @@
         initialize: function() {
             _.bindAll(this, "renderReport", "onReportRender");
         },
-       
+
         events: {
-           "click #renderCommand": "renderReport"
+            "click #renderCommand": "renderReport"
         },
 
         linkToTemplateView: function(view) {
@@ -18,7 +18,7 @@
 
         onReportRender: function(request, cb) {
             if (this.processingReport) {
-                request.options.saveResult = true;
+                request.options.reports = { save: true, async: true };
             }
             this.processingReport = false;
 
