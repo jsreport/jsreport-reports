@@ -2,7 +2,7 @@ var assert = require('assert')
 var path = require('path')
 var supertest = require('supertest')
 var Reporter = require('jsreport-core').Reporter
-require('should')
+var should = require('should')
 
 describe('with reports extension', function () {
   var reporter
@@ -57,7 +57,7 @@ describe('with reports extension', function () {
     }).catch(done)
   })
 
-  it('should return immediate response with link to status', function (done) {
+  it('should return immediate response with link to status when async specified', function (done) {
     var request = {
       options: {reports: {async: true}},
       template: {content: 'foo', recipe: 'html', engine: 'none'},
@@ -92,5 +92,54 @@ describe('with reports extension', function () {
         .expect('Location', /content/)
         .end(done)
     }).catch(done)
+  })
+
+  it('should pass inline data into the child rendering request when async specified', function (done) {
+    var request = {
+      options: {recipe: 'html', reports: {async: true}},
+      originalUrl: 'http://localhost/api/report',
+      reporter: reporter,
+      data: {foo: 'hello'},
+      template: {
+        name: 'name',
+        recipe: 'html'
+      },
+      headers: {}
+    }
+    var response = {
+      content: new Buffer('Hey'),
+      headers: {'Content-Type': 'foo', 'File-Extension': 'foo'}
+    }
+
+    reporter.render = function (req) {
+      req.data.foo.should.be.eql('hello')
+      done()
+    }
+
+    reporter.reports.handleBeforeRender(request, response).catch(done)
+  })
+
+  it('should not pass any data when undefined is on the input when async specified', function (done) {
+    var request = {
+      options: {recipe: 'html', reports: {async: true}},
+      originalUrl: 'http://localhost/api/report',
+      reporter: reporter,
+      template: {
+        name: 'name',
+        recipe: 'html'
+      },
+      headers: {}
+    }
+    var response = {
+      content: new Buffer('Hey'),
+      headers: {'Content-Type': 'foo', 'File-Extension': 'foo'}
+    }
+
+    reporter.render = function (req) {
+      should.not.exist(req.data)
+      done()
+    }
+
+    reporter.reports.handleBeforeRender(request, response).catch(done)
   })
 })
