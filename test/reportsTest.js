@@ -4,6 +4,9 @@ var supertest = require('supertest')
 var Reporter = require('jsreport-core').Reporter
 var should = require('should')
 
+// looks like a current bug in jsreport-express, it should start on random port by default
+process.env.PORT = 0
+
 describe('with reports extension', function () {
   var reporter
 
