@@ -24,6 +24,7 @@ describe('with reports extension', function () {
     var request = {
       options: {recipe: 'html', reports: {save: true}},
       originalUrl: 'http://localhost/api/report',
+      logger: reporter.logger,
       reporter: reporter,
       template: {
         name: 'name',
@@ -63,6 +64,7 @@ describe('with reports extension', function () {
   it('should return immediate response with link to status when async specified', function (done) {
     var request = {
       options: {reports: {async: true}},
+      logger: reporter.logger,
       template: {content: 'foo', recipe: 'html', engine: 'none'},
       originalUrl: 'http://localhost/api/report',
       headers: {}
@@ -102,6 +104,7 @@ describe('with reports extension', function () {
       options: {recipe: 'html', reports: {async: true}},
       originalUrl: 'http://localhost/api/report',
       reporter: reporter,
+      logger: reporter.logger,
       data: {foo: 'hello'},
       template: {
         name: 'name',
@@ -126,6 +129,7 @@ describe('with reports extension', function () {
     var request = {
       options: {recipe: 'html', reports: {async: true}},
       originalUrl: 'http://localhost/api/report',
+      logger: reporter.logger,
       reporter: reporter,
       template: {
         name: 'name',
