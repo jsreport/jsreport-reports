@@ -29,7 +29,13 @@ export default class ReportEditor extends Component {
   }
 
   async openReport (r) {
-    Studio.setPreviewFrameSrc(`/reports/${r._id}/content`)
+    if (r.contentType === 'text/html' || r.contentType === 'text/plain' ||
+      r.contentType === 'application/pdf' || (r.contentType && r.contentType.indexOf('image') !== -1)) {
+      Studio.setPreviewFrameSrc(`/reports/${r._id}/content`)
+    } else {
+      window.open(`${Studio.rootUrl}/reports/${r._id}/attachment`, '_self')
+    }
+
     this.setState({ active: r._id })
     this.ActiveReport = r
   }
@@ -89,7 +95,7 @@ export default class ReportEditor extends Component {
         </tr>
       </thead>
       <tbody>
-      {items}
+        {items}
       </tbody>
     </table>
   }
