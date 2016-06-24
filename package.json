@@ -1,6 +1,6 @@
 {
   "name": "jsreport-reports",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "jsreport extension adding support for storing rendering outputs for later use",
   "scripts": {
     "test": "mocha test --timeout=10000 && standard",
