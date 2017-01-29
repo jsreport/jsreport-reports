@@ -10,17 +10,15 @@ process.env.PORT = 0
 describe('with reports extension', function () {
   var reporter
 
-  beforeEach(function (done) {
+  beforeEach(function () {
     reporter = new Reporter({
       rootDirectory: path.join(__dirname, '../')
     })
 
-    reporter.init().then(function () {
-      done()
-    }).fail(done)
+    return reporter.init()
   })
 
-  it('should be able to read stored report through link', function (done) {
+  it.only('should be able to read stored report through link', function (done) {
     var request = {
       options: {recipe: 'html', reports: {save: true}},
       originalUrl: 'http://localhost/api/report',
