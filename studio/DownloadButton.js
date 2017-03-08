@@ -24,4 +24,3 @@ export default class DownloadButton extends Component {
     </div>
   }
 }
-

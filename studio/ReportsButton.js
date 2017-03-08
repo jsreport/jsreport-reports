@@ -17,4 +17,3 @@ export default class ReportsButton extends Component {
     </div>
   }
 }
-

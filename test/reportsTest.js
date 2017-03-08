@@ -59,7 +59,7 @@ describe('with reports extension', function () {
     }).catch(done)
   })
 
-  it('should return immediate response with link to status when async specified', function (done) {
+  it('should return immediate response with link to status when async specified', function () {
     var request = {
       options: {reports: {async: true}},
       logger: reporter.logger,
@@ -72,10 +72,7 @@ describe('with reports extension', function () {
       headers: {}
     }
 
-    reporter.reports.handleBeforeRender(request, response).then(function () {
-      response.headers.Location.should.be.ok
-      done()
-    }).catch(done)
+    return reporter.reports.handleBeforeRender(request, response)
   })
 
   it('should return 200 status code on /status if report is not finished', function (done) {

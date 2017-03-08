@@ -17,4 +17,3 @@ export default class DeleteButton extends Component {
     </div>
   }
 }
-

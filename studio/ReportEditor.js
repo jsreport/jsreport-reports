@@ -5,7 +5,6 @@ import Studio from 'jsreport-studio'
 
 let _instance
 export default class ReportEditor extends Component {
-
   static get Instance () {
     return _instance
   }
@@ -115,4 +114,3 @@ export default class ReportEditor extends Component {
     </div>
   }
 }
-
