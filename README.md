@@ -4,13 +4,13 @@
 
 > jsreport extension adding support for storing rendering outputs for later use
 
-See http://jsreport.net/learn/reports
+See https://jsreport.net/learn/reports
 
 
-##Installation
+## Installation
 > npm install jsreport-reports
 
-##jsreport-core
+## jsreport-core
 You can apply this extension also manually to [jsreport-core](https://github.com/jsreport/jsreport-core)
 
 ```js
