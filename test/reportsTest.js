@@ -3,11 +3,8 @@ const jsreport = require('jsreport-core')
 require('should')
 const Promise = require('bluebird')
 
-// looks like a current bug in jsreport-express, it should start on random port by default
-process.env.PORT = 0
-
-describe('with reports extension', function () {
-  var reporter
+describe('with reports extension', () => {
+  let reporter
 
   beforeEach(() => {
     reporter = jsreport({ tasks: { strategy: 'in-process' } })
