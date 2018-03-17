@@ -54,17 +54,15 @@ describe('with reports extension', () => {
     response.meta.headers['Location'].should.be.ok()
   })
 
-  it('should return 200 status code on /status if report is not finished', function (done) {
-    reporter.documentStore.collection('reports').insert({}).then(function (r) {
-      supertest(reporter.express.app)
-        .get('/reports/' + r._id + '/status')
-        .expect(200)
-        .end(done)
-    }).catch(done)
+  it('should return 200 status code on /status if report is not finished', async () => {
+    const r = await reporter.documentStore.collection('reports').insert({name: 'foo'})
+    return supertest(reporter.express.app)
+      .get('/reports/' + r._id + '/status')
+      .expect(200)
   })
 
   it('should return 201 status code and Location header on /status if report is finished', async () => {
-    const r = await reporter.documentStore.collection('reports').insert({blobName: 'foo'})
+    const r = await reporter.documentStore.collection('reports').insert({name: 'foo', blobName: 'foo'})
     return supertest(reporter.express.app)
       .get('/reports/' + r._id + '/status')
       .expect(201)
