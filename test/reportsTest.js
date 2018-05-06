@@ -1,147 +1,124 @@
-var assert = require('assert')
-var path = require('path')
-var supertest = require('supertest')
-var Reporter = require('jsreport-core').Reporter
-var should = require('should')
+const supertest = require('supertest')
+const jsreport = require('jsreport-core')
+require('should')
+const Promise = require('bluebird')
 
-// looks like a current bug in jsreport-express, it should start on random port by default
-process.env.PORT = 0
+describe('with reports extension', () => {
+  let reporter
 
-describe('with reports extension', function () {
-  var reporter
-
-  beforeEach(function () {
-    reporter = new Reporter({
-      rootDirectory: path.join(__dirname, '../')
-    })
+  beforeEach(() => {
+    reporter = jsreport({ tasks: { strategy: 'in-process' } })
+    reporter.use(require('../')())
+    reporter.use(require('jsreport-express')())
 
     return reporter.init()
   })
 
-  it.only('should be able to read stored report through link', function (done) {
-    var request = {
-      options: {recipe: 'html', reports: {save: true}},
-      originalUrl: 'http://localhost/api/report',
-      logger: reporter.logger,
-      reporter: reporter,
+  afterEach(() => reporter.close())
+
+  it('should be able to read stored report through link', async () => {
+    const request = {
+      options: { reports: {save: true} },
       template: {
+        engine: 'none',
+        content: 'hello',
         name: 'name',
         recipe: 'html'
-      },
-      headers: {}
-    }
-    var response = {
-      content: new Buffer('Hey'),
-      headers: {'Content-Type': 'foo', 'File-Extension': 'foo'}
+      }
     }
 
-    reporter.reports.handleAfterRender(request, response).then(function () {
-      supertest(reporter.express.app)
-        .get('/reports/' + response.headers['Report-Id'] + '/content')
-        .expect(200)
-        .parse(function (res, cb) {
-          res.data = ''
-          res.on('data', function (chunk) {
-            res.data += chunk
-          })
-          res.on('end', function () {
-            cb(null, res.data)
-          })
-        })
-        .end(function (err, res) {
-          if (err) {
-            return done(err)
-          }
+    const response = await reporter.render(request)
 
-          assert.equal('Hey', res.body)
-          done()
-        })
-    }).catch(done)
+    return supertest(reporter.express.app)
+      .get('/reports/' + response.meta.reportId + '/content')
+      .expect(200)
+      .parse((res, cb) => {
+        res.data = ''
+        res.on('data', (chunk) => (res.data += chunk))
+        res.on('end', () => cb(null, res.data))
+      })
+      .expect((res) => {
+        res.body.should.be.eql('hello')
+      })
   })
 
-  it('should return immediate response with link to status when async specified', function () {
-    var request = {
+  it('should return immediate response with link to status when async specified', async () => {
+    const request = {
       options: {reports: {async: true}},
-      logger: reporter.logger,
       template: {content: 'foo', recipe: 'html', engine: 'none'},
-      originalUrl: 'http://localhost/api/report',
-      headers: {}
+      context: { http: { baseUrl: 'http://localhost' } }
     }
 
-    var response = {
-      headers: {}
-    }
-
-    return reporter.reports.handleBeforeRender(request, response)
+    const response = await reporter.render(request)
+    response.content.toString().should.containEql('Async rendering in progress')
+    response.meta.headers['Location'].should.be.ok()
   })
 
-  it('should return 200 status code on /status if report is not finished', function (done) {
-    reporter.documentStore.collection('reports').insert({}).then(function (r) {
-      supertest(reporter.express.app)
-        .get('/reports/' + r._id + '/status')
-        .expect(200)
-        .end(done)
-    }).catch(done)
+  it('should return 200 status code on /status if report is not finished', async () => {
+    const r = await reporter.documentStore.collection('reports').insert({name: 'foo'})
+    return supertest(reporter.express.app)
+      .get('/reports/' + r._id + '/status')
+      .expect(200)
   })
 
-  it('should return 201 status code and Location header on /status if report is finished', function (done) {
-    reporter.documentStore.collection('reports').insert({blobName: 'foo'}).then(function (r) {
-      supertest(reporter.express.app)
-        .get('/reports/' + r._id + '/status')
-        .expect(201)
-        .expect('Location', /content/)
-        .end(done)
-    }).catch(done)
+  it('should return 201 status code and Location header on /status if report is finished', async () => {
+    const r = await reporter.documentStore.collection('reports').insert({name: 'foo', blobName: 'foo'})
+    return supertest(reporter.express.app)
+      .get('/reports/' + r._id + '/status')
+      .expect(201)
+      .expect('Location', /content/)
   })
 
-  it('should pass inline data into the child rendering request when async specified', function (done) {
-    var request = {
+  it('should pass inline data into the child rendering request when async specified', () => {
+    const request = {
       options: {recipe: 'html', reports: {async: true}},
-      originalUrl: 'http://localhost/api/report',
-      reporter: reporter,
-      logger: reporter.logger,
       data: {foo: 'hello'},
       template: {
         name: 'name',
         recipe: 'html'
-      },
-      headers: {}
-    }
-    var response = {
-      content: new Buffer('Hey'),
-      headers: {'Content-Type': 'foo', 'File-Extension': 'foo'}
+      }
     }
 
-    reporter.render = function (req) {
-      req.data.foo.should.be.eql('hello')
-      done()
-    }
+    return new Promise((resolve, reject) => {
+      reporter.beforeRenderListeners.add('test', (req) => {
+        if (req.options.reports && req.options.reports.async) {
+          return
+        }
 
-    reporter.reports.handleBeforeRender(request, response).catch(done)
+        if (req.data.foo !== 'hello') {
+          return reject(new Error('not propagated'))
+        }
+
+        resolve()
+      })
+
+      reporter.render(request)
+    })
   })
 
-  it('should not pass any data when undefined is on the input when async specified', function (done) {
-    var request = {
+  it('should not pass any data when undefined is on the input when async specified', () => {
+    const request = {
       options: {recipe: 'html', reports: {async: true}},
-      originalUrl: 'http://localhost/api/report',
-      logger: reporter.logger,
-      reporter: reporter,
       template: {
         name: 'name',
         recipe: 'html'
-      },
-      headers: {}
-    }
-    var response = {
-      content: new Buffer('Hey'),
-      headers: {'Content-Type': 'foo', 'File-Extension': 'foo'}
+      }
     }
 
-    reporter.render = function (req) {
-      should.not.exist(req.data)
-      done()
-    }
+    return new Promise((resolve, reject) => {
+      reporter.beforeRenderListeners.add('test', (req) => {
+        if (req.options.reports && req.options.reports.async) {
+          return
+        }
 
-    reporter.reports.handleBeforeRender(request, response).catch(done)
+        if (req.data) {
+          return reject(new Error('Data should not be passed'))
+        }
+
+        resolve()
+      })
+
+      reporter.render(request)
+    })
   })
 })

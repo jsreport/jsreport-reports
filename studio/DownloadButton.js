@@ -3,11 +3,6 @@ import ReportEditor from './ReportEditor'
 import Studio from 'jsreport-studio'
 
 export default class DownloadButton extends Component {
-  static propTypes = {
-    tab: React.PropTypes.object,
-    onUpdate: React.PropTypes.func.isRequired
-  }
-
   download () {
     if (ReportEditor.Instance && ReportEditor.Instance.ActiveReport) {
       window.open(`${Studio.rootUrl}/reports/${ReportEditor.ActiveReport._id}/attachment`, '_self')
@@ -23,4 +18,9 @@ export default class DownloadButton extends Component {
       <i className='fa fa-download' />Download
     </div>
   }
+}
+
+DownloadButton.propTypes = {
+  tab: React.PropTypes.object,
+  onUpdate: React.PropTypes.func.isRequired
 }
