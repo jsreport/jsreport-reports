@@ -1,6 +1,6 @@
 {
   "name": "jsreport-reports",
-  "version": "2.0.0",
+  "version": "2.0.1",
   "description": "jsreport extension adding support for storing rendering outputs for later use",
   "scripts": {
     "start": "jsreport-studio-start --httpPort 5488",
