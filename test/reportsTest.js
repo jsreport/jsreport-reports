@@ -122,3 +122,49 @@ describe('with reports extension', () => {
     })
   })
 })
+
+describe('with reports extension and clean enabled', () => {
+  let reporter
+
+  beforeEach(() => {
+    reporter = jsreport({ tasks: { strategy: 'in-process' } })
+    reporter.use(require('../')({
+      cleanInterval: '100ms',
+      cleanTreshold: '1ms'
+    }))
+
+    return reporter.init()
+  })
+
+  afterEach(() => reporter.close())
+
+  it('should remove old reports', async () => {
+    await reporter.render({ template: { content: 'foo', engine: 'none', recipe: 'html' }, options: { reports: { save: true } } })
+    await Promise.delay(100)
+    const reports = await reporter.documentStore.collection('reports').find({})
+    reports.should.have.length(0)
+  })
+})
+
+describe('with reports extension and clean enabled but long treshold', () => {
+  let reporter
+
+  beforeEach(() => {
+    reporter = jsreport({ tasks: { strategy: 'in-process' } })
+    reporter.use(require('../')({
+      cleanInterval: '100ms',
+      cleanTreshold: '1d'
+    }))
+
+    return reporter.init()
+  })
+
+  afterEach(() => reporter.close())
+
+  it('should remove old reports', async () => {
+    await reporter.render({ template: { content: 'foo', engine: 'none', recipe: 'html' }, options: { reports: { save: true } } })
+    await Promise.delay(100)
+    const reports = await reporter.documentStore.collection('reports').find({})
+    reports.should.have.length(1)
+  })
+})
