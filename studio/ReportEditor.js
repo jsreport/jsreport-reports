@@ -12,15 +12,26 @@ export default class ReportEditor extends Component {
   constructor () {
     super()
     this.state = { reports: [], active: null }
+    _instance = this
+  }
+
+  refresh () {
     this.skip = 0
     this.top = 50
     this.pending = 0
     this.ActiveReport = null
-    _instance = this
   }
 
-  componentWillMount () {
-    this.lazyFetch()
+  onTabActive () {
+    this.refresh()
+
+    this.setState({
+      reports: [],
+      active: null,
+      count: 0
+    }, () => {
+      this.lazyFetch()
+    })
   }
 
   componentWillUnmount () {
