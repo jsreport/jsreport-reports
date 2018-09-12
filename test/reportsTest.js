@@ -7,7 +7,7 @@ describe('with reports extension', () => {
   let reporter
 
   beforeEach(() => {
-    reporter = jsreport({ tasks: { strategy: 'in-process' } })
+    reporter = jsreport({ templatingEngines: { strategy: 'in-process' } })
     reporter.use(require('../')())
     reporter.use(require('jsreport-express')())
 
@@ -127,7 +127,7 @@ describe('with reports extension and clean enabled', () => {
   let reporter
 
   beforeEach(() => {
-    reporter = jsreport({ tasks: { strategy: 'in-process' } })
+    reporter = jsreport({ templatingEngines: { strategy: 'in-process' } })
     reporter.use(require('../')({
       cleanInterval: '100ms',
       cleanTreshold: '1ms'
@@ -150,7 +150,7 @@ describe('with reports extension and clean enabled but long treshold', () => {
   let reporter
 
   beforeEach(() => {
-    reporter = jsreport({ tasks: { strategy: 'in-process' } })
+    reporter = jsreport({ templatingEngines: { strategy: 'in-process' } })
     reporter.use(require('../')({
       cleanInterval: '100ms',
       cleanTreshold: '1d'
