@@ -1,7 +1,6 @@
 const supertest = require('supertest')
 const jsreport = require('jsreport-core')
 require('should')
-const Promise = require('bluebird')
 
 describe('with reports extension', () => {
   let reporter
@@ -140,7 +139,7 @@ describe('with reports extension and clean enabled', () => {
 
   it('should remove old reports', async () => {
     await reporter.render({ template: { content: 'foo', engine: 'none', recipe: 'html' }, options: { reports: { save: true } } })
-    await Promise.delay(100)
+    await delay(100)
     const reports = await reporter.documentStore.collection('reports').find({})
     reports.should.have.length(0)
   })
@@ -163,8 +162,12 @@ describe('with reports extension and clean enabled but long treshold', () => {
 
   it('should remove old reports', async () => {
     await reporter.render({ template: { content: 'foo', engine: 'none', recipe: 'html' }, options: { reports: { save: true } } })
-    await Promise.delay(100)
+    await delay(100)
     const reports = await reporter.documentStore.collection('reports').find({})
     reports.should.have.length(1)
   })
 })
+
+function delay (timeToWait) {
+  return new Promise((resolve) => setTimeout(resolve, timeToWait))
+}

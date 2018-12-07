@@ -33,9 +33,8 @@
   },
   "license": "LGPL",
   "dependencies": {
-    "bluebird": "3.5.1",
     "lodash.omit": "4.5.0",
-    "node.extend": "2.0.0",
+    "node.extend.without.arrays": "1.1.5",
     "parse-duration": "0.1.1"
   },
   "author": "Jan Blaha",
@@ -45,9 +44,9 @@
     "eslint-config-standard-jsx": "5.0.0",
     "eslint-plugin-babel": "5.1.0",
     "in-publish": "2.0.0",
-    "jsreport-core": "2.2.0",
-    "jsreport-express": "2.2.2",
-    "jsreport-studio-dev": "1.3.0",
+    "jsreport-core": "2.3.0",
+    "jsreport-express": "2.2.3",
+    "jsreport-studio-dev": "1.3.2",
     "mocha": "5.2.0",
     "should": "13.2.3",
     "standard": "11.0.1",
