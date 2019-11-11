@@ -39,6 +39,11 @@ export default class ReportEditor extends Component {
   }
 
   async openReport (r) {
+    // in case blob save failed
+    if (r.blobName == null) {
+      return
+    }
+
     if (r.contentType === 'text/html' || r.contentType === 'text/plain' ||
       r.contentType === 'application/pdf' || (r.contentType && r.contentType.indexOf('image') !== -1)) {
       Studio.setPreviewFrameSrc(`/reports/${r._id}/content`)

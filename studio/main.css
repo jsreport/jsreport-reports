@@ -1,4 +1,4 @@
-.listContainer {
+.x-reports-ReportEditor-listContainer {
   margin-top: 1rem;
   overflow: auto;
   position: relative;
@@ -7,9 +7,10 @@
   height: auto;
 }
 
-.listContainer > div {
+.x-reports-ReportEditor-listContainer > div {
   /*it somehow shows the horizontal scrollbar even when no needeit, this workaround to hide it*/
   width: 95%;
   /*the tabs height based on flex box is otherwise wrongly calculated*/
   position: absolute !important;
 }
+
