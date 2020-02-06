@@ -138,6 +138,76 @@ describe('with reports extension', () => {
       reporter.render(request)
     })
   })
+
+  it('nested requests without save:true should not produce reports', async () => {
+    await reporter.beforeRenderListeners.add('test', async (req, res) => {
+      if (req.template.content === 'main') {
+        await reporter.render({
+          template: {
+            engine: 'none',
+            content: 'nested',
+            name: 'name',
+            recipe: 'html'
+          }
+        }, req)
+      }
+    })
+
+    await reporter.render({
+      template: {
+        engine: 'none',
+        content: 'main',
+        name: 'name',
+        recipe: 'html'
+      },
+      options: {
+        reports: {
+          save: true
+        }
+      }
+    })
+
+    const reports = await reporter.documentStore.collection('reports').find({})
+    reports.should.have.length(1)
+
+    const blob = await streamToString(await reporter.blobStorage.read(reports[0].blobName))
+    blob.should.be.eql('main')
+  })
+
+  it('nested requests with save true should also produce reports', async () => {
+    await reporter.beforeRenderListeners.add('test', async (req, res) => {
+      if (req.template.content === 'main') {
+        await reporter.render({
+          template: {
+            engine: 'none',
+            content: 'nested',
+            name: 'name',
+            recipe: 'html'
+          },
+          options: {
+            reports: {
+              save: true
+            }
+          }
+        }, req)
+      }
+    })
+
+    await reporter.render({
+      template: {
+        engine: 'none',
+        content: 'main',
+        name: 'name',
+        recipe: 'html'
+      }
+    })
+
+    const reports = await reporter.documentStore.collection('reports').find({})
+    reports.should.have.length(1)
+
+    const blob = await streamToString(await reporter.blobStorage.read(reports[0].blobName))
+    blob.should.be.eql('nested')
+  })
 })
 
 describe('with reports extension and clean enabled', () => {
