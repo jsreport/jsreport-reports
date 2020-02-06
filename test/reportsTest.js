@@ -15,6 +15,24 @@ describe('with reports extension', () => {
 
   afterEach(() => reporter.close())
 
+  it('should store report entity and blob with save: true', async () => {
+    await reporter.render({
+      options: { reports: {save: true} },
+      template: {
+        engine: 'none',
+        content: 'hello',
+        name: 'name',
+        recipe: 'html'
+      }
+    })
+
+    const reports = await reporter.documentStore.collection('reports').find({})
+    reports.should.have.length(1)
+
+    const blob = await streamToString(await reporter.blobStorage.read(reports[0].blobName))
+    blob.should.be.eql('hello')
+  })
+
   it('should be able to read stored report through link', async () => {
     const request = {
       options: { reports: {save: true} },
@@ -170,4 +188,13 @@ describe('with reports extension and clean enabled but long treshold', () => {
 
 function delay (timeToWait) {
   return new Promise((resolve) => setTimeout(resolve, timeToWait))
+}
+
+function streamToString (stream) {
+  const chunks = []
+  return new Promise((resolve, reject) => {
+    stream.on('data', chunk => chunks.push(chunk))
+    stream.on('error', reject)
+    stream.on('end', () => resolve(Buffer.concat(chunks).toString('utf8')))
+  })
 }
