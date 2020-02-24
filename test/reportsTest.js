@@ -128,7 +128,7 @@ describe('with reports extension', () => {
           return
         }
 
-        if (req.data) {
+        if (Object.keys(req.data).length) {
           return reject(new Error('Data should not be passed'))
         }
 
