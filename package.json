@@ -35,7 +35,7 @@
   "dependencies": {
     "lodash.omit": "4.5.0",
     "node.extend.without.arrays": "1.1.6",
-    "parse-duration": "0.1.1"
+    "parse-duration": "0.1.2"
   },
   "author": "Jan Blaha",
   "devDependencies": {
@@ -44,8 +44,8 @@
     "eslint-config-standard-jsx": "5.0.0",
     "eslint-plugin-babel": "5.1.0",
     "in-publish": "2.0.0",
-    "jsreport-core": "2.6.1",
-    "jsreport-express": "2.5.0",
+    "jsreport-core": "2.7.0",
+    "jsreport-express": "2.6.0",
     "jsreport-studio-dev": "1.5.0",
     "mocha": "5.2.0",
     "should": "13.2.3",
