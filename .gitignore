@@ -29,6 +29,8 @@ node_modules
 .idea
 
 # temporary include
-studio/main.js
-studio/main.js.map
+#studio/main.js
+#studio/main.js.map
+#studio/main.css
+#studio/main.css.map
 data

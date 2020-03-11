@@ -39,7 +39,13 @@ export default class ReportEditor extends Component {
   }
 
   async openReport (r) {
-    if (r.state === 'success' || r.blobName != null) {
+    let state = r.state
+
+    if (state == null && r.blobName != null) {
+      state = 'success'
+    }
+
+    if (state === 'success') {
       if (r.contentType === 'text/html' || r.contentType === 'text/plain' ||
         r.contentType === 'application/pdf' || (r.contentType && r.contentType.indexOf('image') !== -1)) {
         Studio.setPreviewFrameSrc(`/reports/${r._id}/content`)
@@ -49,7 +55,7 @@ export default class ReportEditor extends Component {
 
       this.setState({ active: r._id })
       this.ActiveReport = r
-    } else if (r.state === 'error') {
+    } else if (state === 'error') {
       Studio.setPreviewFrameSrc('data:text/html;charset=utf-8,' + encodeURI(r.error || r.state))
       this.setState({ active: null })
       this.ActiveReport = null
@@ -92,11 +98,18 @@ export default class ReportEditor extends Component {
   }
 
   renderItem (report, index) {
+    let state = report.state
     let stateClass
 
-    if (report.state === 'error') {
+    if (state == null && report.blobName != null) {
+      state = 'success'
+    } else if (state == null) {
+      state = 'error'
+    }
+
+    if (state === 'error') {
       stateClass = 'error'
-    } else if (report.state === 'success') {
+    } else if (state === 'success') {
       stateClass = 'success'
     } else {
       stateClass = 'cancelled'
@@ -109,7 +122,7 @@ export default class ReportEditor extends Component {
         onClick={() => this.openReport(report)}
       >
         <td>
-          <span className={`${style.state} ${style[stateClass]}`}>{report.state}</span>
+          <span className={`${style.state} ${style[stateClass]}`}>{state}</span>
         </td>
         <td className='selection'>{report.name}</td>
         <td>{report.creationDate.toLocaleString()}</td>
