@@ -14,3 +14,26 @@
   position: absolute !important;
 }
 
+.x-reports-ReportEditor-state {
+  font-size: 0.8rem;
+  padding: 0.3rem;
+  display: inline-block;
+  text-align: center;
+  min-width: 4rem;
+}
+
+.x-reports-ReportEditor-error {
+  background-color: #da532c;
+  color: white;
+}
+
+.x-reports-ReportEditor-cancelled {
+  background-color: orange;
+  color: white;
+}
+
+.x-reports-ReportEditor-success {
+  background-color: #4CAF50;
+  color: white;
+}
+

@@ -31,3 +31,4 @@ node_modules
 # temporary include
 studio/main.js
 studio/main.js.map
+data

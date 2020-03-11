@@ -39,20 +39,21 @@ export default class ReportEditor extends Component {
   }
 
   async openReport (r) {
-    // in case blob save failed
-    if (r.blobName == null) {
-      return
-    }
+    if (r.state === 'success' || r.blobName != null) {
+      if (r.contentType === 'text/html' || r.contentType === 'text/plain' ||
+        r.contentType === 'application/pdf' || (r.contentType && r.contentType.indexOf('image') !== -1)) {
+        Studio.setPreviewFrameSrc(`/reports/${r._id}/content`)
+      } else {
+        window.open(`${Studio.rootUrl}/reports/${r._id}/attachment`, '_self')
+      }
 
-    if (r.contentType === 'text/html' || r.contentType === 'text/plain' ||
-      r.contentType === 'application/pdf' || (r.contentType && r.contentType.indexOf('image') !== -1)) {
-      Studio.setPreviewFrameSrc(`/reports/${r._id}/content`)
-    } else {
-      window.open(`${Studio.rootUrl}/reports/${r._id}/attachment`, '_self')
+      this.setState({ active: r._id })
+      this.ActiveReport = r
+    } else if (r.state === 'error') {
+      Studio.setPreviewFrameSrc('data:text/html;charset=utf-8,' + encodeURI(r.error || r.state))
+      this.setState({ active: null })
+      this.ActiveReport = null
     }
-
-    this.setState({ active: r._id })
-    this.ActiveReport = r
   }
 
   async lazyFetch () {
@@ -91,28 +92,48 @@ export default class ReportEditor extends Component {
   }
 
   renderItem (report, index) {
-    return <tr
-      key={index} className={(this.state.active === report._id) ? 'active' : ''}
-      onClick={() => this.openReport(report)}>
-      <td className='selection'>{report.name}</td>
-      <td>{report.creationDate.toLocaleString()}</td>
-      <td>{report.recipe}</td>
-    </tr>
+    let stateClass
+
+    if (report.state === 'error') {
+      stateClass = 'error'
+    } else if (report.state === 'success') {
+      stateClass = 'success'
+    } else {
+      stateClass = 'cancelled'
+    }
+
+    return (
+      <tr
+        key={index}
+        className={(this.state.active === report._id) ? 'active' : ''}
+        onClick={() => this.openReport(report)}
+      >
+        <td>
+          <span className={`${style.state} ${style[stateClass]}`}>{report.state}</span>
+        </td>
+        <td className='selection'>{report.name}</td>
+        <td>{report.creationDate.toLocaleString()}</td>
+        <td>{report.recipe}</td>
+      </tr>
+    )
   }
 
   renderItems (items, ref) {
-    return <table className='table' ref={ref}>
-      <thead>
-        <tr>
-          <th>name</th>
-          <th>created on</th>
-          <th>recipe</th>
-        </tr>
-      </thead>
-      <tbody>
-        {items}
-      </tbody>
-    </table>
+    return (
+      <table className='table' ref={ref}>
+        <thead>
+          <tr>
+            <th>state</th>
+            <th>name</th>
+            <th>created on</th>
+            <th>recipe</th>
+          </tr>
+        </thead>
+        <tbody>
+          {items}
+        </tbody>
+      </table>
+    )
   }
 
   render () {
