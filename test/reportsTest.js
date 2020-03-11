@@ -33,6 +33,39 @@ describe('with reports extension', () => {
     blob.should.be.eql('hello')
   })
 
+  it('should store report entity and single report with async: true', () => {
+    return new Promise((resolve, reject) => {
+      reporter.afterRenderListeners.add('test', async (req, res) => {
+        if (req.template.content !== 'hello') {
+          return
+        }
+
+        // now it should be saved
+        try {
+          const reports = await reporter.documentStore.collection('reports').find({})
+          reports.should.have.length(1)
+
+          const blob = await streamToString(await reporter.blobStorage.read(reports[0].blobName))
+          blob.should.be.eql('hello')
+        } catch (e) {
+          reject(e)
+        }
+
+        resolve()
+      })
+
+      reporter.render({
+        options: { reports: {async: true} },
+        template: {
+          engine: 'none',
+          content: 'hello',
+          name: 'name',
+          recipe: 'html'
+        }
+      }).catch(reject)
+    })
+  })
+
   it('should be able to read stored report through link', async () => {
     const request = {
       options: { reports: {save: true} },
