@@ -203,7 +203,7 @@ var ReportEditor = function (_Component) {
 
                 if (state === 'success') {
                   if (r.contentType === 'text/html' || r.contentType === 'text/plain' || r.contentType === 'application/pdf' || r.contentType && r.contentType.indexOf('image') !== -1) {
-                    _jsreportStudio2.default.setPreviewFrameSrc('/reports/' + r._id + '/content');
+                    _jsreportStudio2.default.setPreviewFrameSrc(_jsreportStudio2.default.rootUrl + '/reports/' + r._id + '/content');
                   } else {
                     window.open(_jsreportStudio2.default.rootUrl + '/reports/' + r._id + '/attachment', '_self');
                   }

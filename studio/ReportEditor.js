@@ -46,9 +46,13 @@ export default class ReportEditor extends Component {
     }
 
     if (state === 'success') {
-      if (r.contentType === 'text/html' || r.contentType === 'text/plain' ||
-        r.contentType === 'application/pdf' || (r.contentType && r.contentType.indexOf('image') !== -1)) {
-        Studio.setPreviewFrameSrc(`/reports/${r._id}/content`)
+      if (
+        r.contentType === 'text/html' ||
+        r.contentType === 'text/plain' ||
+        r.contentType === 'application/pdf' ||
+        (r.contentType && r.contentType.indexOf('image') !== -1)
+      ) {
+        Studio.setPreviewFrameSrc(`${Studio.rootUrl}/reports/${r._id}/content`)
       } else {
         window.open(`${Studio.rootUrl}/reports/${r._id}/attachment`, '_self')
       }
