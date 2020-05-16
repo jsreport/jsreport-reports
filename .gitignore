@@ -34,3 +34,4 @@ node_modules
 #studio/main.css
 #studio/main.css.map
 data
+jsreport.config.json
