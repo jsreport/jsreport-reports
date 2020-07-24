@@ -1,3 +1,4 @@
+import PropTypes from 'prop-types'
 import React, { Component } from 'react'
 import Studio from 'jsreport-studio'
 
@@ -14,6 +15,6 @@ export default class ReportsButton extends Component {
 }
 
 ReportsButton.propTypes = {
-  tab: React.PropTypes.object,
-  onUpdate: React.PropTypes.func.isRequired
+  tab: PropTypes.object,
+  onUpdate: PropTypes.func.isRequired
 }

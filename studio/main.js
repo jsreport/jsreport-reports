@@ -81,7 +81,7 @@
 /******/
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 3);
+/******/ 	return __webpack_require__(__webpack_require__.s = 4);
 /******/ })
 /************************************************************************/
 /******/ ([
@@ -109,11 +109,11 @@ Object.defineProperty(exports, "__esModule", {
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-var _reactList = __webpack_require__(4);
+var _reactList = __webpack_require__(5);
 
 var _reactList2 = _interopRequireDefault(_reactList);
 
-var _ReportEditor = __webpack_require__(5);
+var _ReportEditor = __webpack_require__(6);
 
 var _ReportEditor2 = _interopRequireDefault(_ReportEditor);
 
@@ -469,6 +469,12 @@ exports.default = ReportEditor;
 
 /***/ }),
 /* 3 */
+/***/ (function(module, exports) {
+
+module.exports = Studio.libraries['prop-types'];
+
+/***/ }),
+/* 4 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -478,15 +484,15 @@ var _ReportEditor = __webpack_require__(2);
 
 var _ReportEditor2 = _interopRequireDefault(_ReportEditor);
 
-var _ReportsButton = __webpack_require__(6);
+var _ReportsButton = __webpack_require__(7);
 
 var _ReportsButton2 = _interopRequireDefault(_ReportsButton);
 
-var _DownloadButton = __webpack_require__(7);
+var _DownloadButton = __webpack_require__(8);
 
 var _DownloadButton2 = _interopRequireDefault(_DownloadButton);
 
-var _DeleteButton = __webpack_require__(8);
+var _DeleteButton = __webpack_require__(9);
 
 var _DeleteButton2 = _interopRequireDefault(_DeleteButton);
 
@@ -509,20 +515,20 @@ _jsreportStudio2.default.addToolbarComponent(_DownloadButton2.default);
 _jsreportStudio2.default.addToolbarComponent(_DeleteButton2.default);
 
 /***/ }),
-/* 4 */
+/* 5 */
 /***/ (function(module, exports) {
 
 module.exports = Studio.libraries['react-list'];
 
 /***/ }),
-/* 5 */
+/* 6 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // extracted by mini-css-extract-plugin
 module.exports = {"listContainer":"x-reports-ReportEditor-listContainer","state":"x-reports-ReportEditor-state","error":"x-reports-ReportEditor-error","cancelled":"x-reports-ReportEditor-cancelled","success":"x-reports-ReportEditor-success"};
 
 /***/ }),
-/* 6 */
+/* 7 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -533,6 +539,10 @@ Object.defineProperty(exports, "__esModule", {
 });
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+var _propTypes = __webpack_require__(3);
+
+var _propTypes2 = _interopRequireDefault(_propTypes);
 
 var _react = __webpack_require__(0);
 
@@ -587,12 +597,12 @@ exports.default = ReportsButton;
 
 
 ReportsButton.propTypes = {
-  tab: _react2.default.PropTypes.object,
-  onUpdate: _react2.default.PropTypes.func.isRequired
+  tab: _propTypes2.default.object,
+  onUpdate: _propTypes2.default.func.isRequired
 };
 
 /***/ }),
-/* 7 */
+/* 8 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -603,6 +613,10 @@ Object.defineProperty(exports, "__esModule", {
 });
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+var _propTypes = __webpack_require__(3);
+
+var _propTypes2 = _interopRequireDefault(_propTypes);
 
 var _react = __webpack_require__(0);
 
@@ -674,12 +688,12 @@ exports.default = DownloadButton;
 
 
 DownloadButton.propTypes = {
-  tab: _react2.default.PropTypes.object,
-  onUpdate: _react2.default.PropTypes.func.isRequired
+  tab: _propTypes2.default.object,
+  onUpdate: _propTypes2.default.func.isRequired
 };
 
 /***/ }),
-/* 8 */
+/* 9 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -690,6 +704,10 @@ Object.defineProperty(exports, "__esModule", {
 });
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+var _propTypes = __webpack_require__(3);
+
+var _propTypes2 = _interopRequireDefault(_propTypes);
 
 var _react = __webpack_require__(0);
 
@@ -748,8 +766,8 @@ exports.default = DeleteButton;
 
 
 DeleteButton.propTypes = {
-  tab: _react2.default.PropTypes.object,
-  onUpdate: _react2.default.PropTypes.func.isRequired
+  tab: _propTypes2.default.object,
+  onUpdate: _propTypes2.default.func.isRequired
 };
 
 /***/ })

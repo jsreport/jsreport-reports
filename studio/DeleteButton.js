@@ -1,3 +1,4 @@
+import PropTypes from 'prop-types'
 import React, { Component } from 'react'
 import ReportEditor from './ReportEditor'
 
@@ -18,6 +19,6 @@ export default class DeleteButton extends Component {
 }
 
 DeleteButton.propTypes = {
-  tab: React.PropTypes.object,
-  onUpdate: React.PropTypes.func.isRequired
+  tab: PropTypes.object,
+  onUpdate: PropTypes.func.isRequired
 }
