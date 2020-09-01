@@ -137,7 +137,7 @@ describe('with reports extension', () => {
       .expect('Location', /content/)
   })
 
-  it('should produce correct link with public: true', () => {
+  it('should produce correct link with public: true', (done) => {
     supertest(reporter.express.app)
       .post('/api/report')
       .send({
@@ -150,7 +150,7 @@ describe('with reports extension', () => {
         options: {
           reports: { save: true, public: true }
         }
-      }).expect(200).expect('Permanent-Link', /reports\/public/)
+      }).expect('Permanent-Link', /reports\/public/).expect(200, done)
   })
 
   it('should pass inline data into the child rendering request when async specified', () => {
