@@ -1,9 +1,8 @@
-import PropTypes from 'prop-types'
 import React, { Component } from 'react'
 import ReportEditor from './ReportEditor'
 import Studio from 'jsreport-studio'
 
-export default class DownloadButton extends Component {
+class DownloadButton extends Component {
   getReportEditorInstance () {
     return ReportEditor.default ? ReportEditor.default.Instance : ReportEditor.Instance
   }
@@ -27,7 +26,4 @@ export default class DownloadButton extends Component {
   }
 }
 
-DownloadButton.propTypes = {
-  tab: PropTypes.object,
-  onUpdate: PropTypes.func.isRequired
-}
+export default DownloadButton

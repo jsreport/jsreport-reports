@@ -1,8 +1,7 @@
-import PropTypes from 'prop-types'
 import React, { Component } from 'react'
 import Studio from 'jsreport-studio'
 
-export default class ReportsButton extends Component {
+class ReportsButton extends Component {
   openReports () {
     Studio.openTab({ key: 'Reports', editorComponentKey: 'reports', title: 'Reports' })
   }
@@ -14,7 +13,4 @@ export default class ReportsButton extends Component {
   }
 }
 
-ReportsButton.propTypes = {
-  tab: PropTypes.object,
-  onUpdate: PropTypes.func.isRequired
-}
+export default ReportsButton
