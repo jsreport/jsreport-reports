@@ -66,6 +66,24 @@ describe('with reports extension', () => {
     })
   })
 
+  it('should produce report entity with public: true', async () => {
+    await reporter.render({
+      options: {
+        reports: { save: true, public: true }
+      },
+      template: {
+        engine: 'none',
+        content: 'hello',
+        name: 'name',
+        recipe: 'html'
+      }
+    })
+
+    const reports = await reporter.documentStore.collection('reports').find({})
+    reports.should.have.length(1)
+    reports[0].public.should.be.True()
+  })
+
   it('should be able to read stored report through link', async () => {
     const request = {
       options: { reports: {save: true} },
@@ -117,6 +135,22 @@ describe('with reports extension', () => {
       .get('/reports/' + r._id + '/status')
       .expect(201)
       .expect('Location', /content/)
+  })
+
+  it('should produce correct link with public: true', () => {
+    supertest(reporter.express.app)
+      .post('/api/report')
+      .send({
+        template: {
+          engine: 'none',
+          content: 'hello',
+          name: 'name',
+          recipe: 'html'
+        },
+        options: {
+          reports: { save: true, public: true }
+        }
+      }).expect(200).expect('Permanent-Link', /reports\/public/)
   })
 
   it('should pass inline data into the child rendering request when async specified', () => {
