@@ -9,6 +9,7 @@ describe('with reports extension', () => {
     reporter = jsreport({ templatingEngines: { strategy: 'in-process' } })
     reporter.use(require('../')())
     reporter.use(require('jsreport-express')())
+    reporter.use(require('jsreport-scripts')())
 
     return reporter.init()
   })
@@ -274,6 +275,29 @@ describe('with reports extension', () => {
 
     const blob = await streamToString(await reporter.blobStorage.read(reports[0].blobName))
     blob.should.be.eql('nested')
+  })
+
+  it('should store report after custom script afterRender modifies it', async () => {
+    await reporter.render({
+      options: { reports: {save: true} },
+      template: {
+        engine: 'none',
+        content: 'hello',
+        scripts: [{
+          content: `
+          function afterRender(req, res) {
+            res.content = Buffer.from('changed')            
+          }
+          `
+        }],
+        name: 'name',
+        recipe: 'html'
+      }
+    })
+
+    const report = await reporter.documentStore.collection('reports').findOne({})
+    const blob = await streamToString(await reporter.blobStorage.read(report.blobName))
+    blob.should.be.eql('changed')
   })
 })
 
