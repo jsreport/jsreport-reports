@@ -85,6 +85,24 @@ describe('with reports extension', () => {
     reports[0].public.should.be.True()
   })
 
+  it('should produce report entity with public: true and async: true', async () => {
+    await reporter.render({
+      options: {
+        reports: { async: true, public: true }
+      },
+      template: {
+        engine: 'none',
+        content: 'hello',
+        name: 'name',
+        recipe: 'html'
+      }
+    })
+
+    const reports = await reporter.documentStore.collection('reports').find({})
+    reports.should.have.length(1)
+    reports[0].public.should.be.True()
+  })
+
   it('should be able to read stored report through link', async () => {
     const request = {
       options: { reports: {save: true} },
